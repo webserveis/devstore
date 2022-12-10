@@ -2,7 +2,7 @@
 
 Backend de una tienda de productos con enlace externo
 
-# Estructura de la BD
+## Estructura de la BD
 Dev store API, es una API para gestionar una pequeña tienda con productos y enlaces de tiendas externas, partiendo la estructura siguiente
 
  - Suppliers
