@@ -61,104 +61,78 @@ Dentro del directorio app se encuenta el `settings.php` donde se debe definir el
 **Get last update**
 Obtener la última modificación de un producto
 
-http://codelaby.es/devstore/public/v1/status
+`devstore/public/v1/status`
 
 
 **Get all categories**
 Obtener todas la categorias
 
-http://codelaby.es/devstore/public/v1/categories
+`devstore/public/v1/categories`
 
 **Get category by ID**
 Obtener una categoria mediante su ID
 
-http://codelaby.es/devstore/public/v1/categories/4
+`devstore/public/v1/categories/4`
 
 **Get all available categories**
 Obtener todas las categorias que están disponibles, campo `active` debe ser 1
 
-http://localhost/devstore/public/v1/categories?filter=active:eq[1]
+`devstore/public/v1/categories?filter=active:eq[1]`
 
 **Get all products**
 Obtener todos los productos
 
-http://localhost/devstore/public/v1/products
+`devstore/public/v1/products`
 
 **Get a product by id**
 Obtener un producto mediante su ID
 
-http://localhost/devstore/public/v1/products/2
+`devstore/public/v1/products/2`
 
 **Get only available products and sort bye reorder_level**
 Obtener los productos disponibles y reordenados por nivel de aparición, campo `reorder_level`
 
-http://localhost/devstore/public/v1/products?filter=available:eq[1]&sort_by=reorder_level:asc
+`devstore/public/v1/products?filter=available:eq[1]&sort_by=reorder_level:asc`
 
 **Get last products**
 Obtener los 5 últimos productos de la tienda
 
-http://localhost/devstore/public/v1/products?filter=available:eq[1]&sort_by=ctime:desc&limit=5
+`devstore/public/v1/products?filter=available:eq[1]&sort_by=ctime:desc&limit=5`
 
 **Get all available products from category**
 Obtener todos los productos disponibles de una categoria mediante el ID de categoria
 
-http://localhost/devstore/public/v1/products?filter=available:eq[1],category_id:eq[1]&sort_by=reorder_level:asc
+`devstore/public/v1/products?filter=available:eq[1],category_id:eq[1]&sort_by=reorder_level:asc`
 
 **Get all suppliers**
 Obtener todos los subministradores de productos
 
-http://localhost/devstore/public/v1/suppliers
+`devstore/public/v1/suppliers`
 
 **Get one supplier by ID**
 Obtener un subministrador mediante su ID
 
-http://localhost/devstore/public/v1/suppliers/1
+`devstore/public/v1/suppliers/1`
 
 **Get all available products compact output**
 Obtener todos los productos disponibles, solamente los campos escenciales para mostrar un listado rápido
 
-http://localhost/devstore/public/v1/products/compact
+`devstore/public/v1/products/compact`
 
 En caso se querer filtrar por una categoria
 
-http://localhost/devstore/public/v1/products/compact?filter=category_id:eq[1]
+`devstore/public/v1/products/compact?filter=category_id:eq[1]`
 
 
 **Get all store links from products**
 Obtener todos los enlaces de los productos
 
-http://localhost/devstore/public/v1/productslinks
+`devstore/public/v1/productslinks`
 
 **Get all store links from product_id**
 Obtener todos los enlaces de un producto mediante su ID de producto
 
-http://localhost/devstore/public/v1/productslinks?filter=product_id:eq[2]
+`devstore/public/v1/productslinks?filter=product_id:eq[2]`
 
 # Assets
 http://localhost/devstore/public/assets/geeksta_itsworksinmymachine.jpg
-
-# Fix Errors
-
-Pueda que si se sube la API remotamente salte la excepcio `PDO::ATTR_EMULATE_PREPARES` en settings se debe definir a `true`
-
-```
-'pdo' => [
-	...
-    'options' => [
-        \PDO::ATTR_EMULATE_PREPARES => true
-    ]
-],
-```
-
-Y en el archivo `vendor\faapz\pdo\src\Database.php` remover la linea
-
-```php
-public function __construct(string $dsn, ?string $username = null, ?string $password = null, array $options = [])
-{
-    parent::__construct($dsn, $username, $password, $options + $this->getDefaultOptions());
-}
-```
-por
-```php
-	parent::__construct($dsn, $username, $password, $options );
-```
