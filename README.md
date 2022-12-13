@@ -1,26 +1,29 @@
+#
 # Dev Store API
+
 
 Backend de una tienda de productos con enlace externo
 
 ## Estructura de la BD
 Dev store API, es una API para gestionar una pequeña tienda con productos y enlaces de tiendas externas, partiendo la estructura siguiente
 
- - Suppliers
+ - **Suppliers**
 Subministradores, diseñadores del producto
 
- - Stores
+ - **Stores**
 Tiendas donde se pueden econtrar los productos
 
- - Categories
+ - **Categories**
 Categorias de productos
 
- - Products
+
+ - **Products**
 Productos disponibles
 
- - LinksProducts
+ - **LinksProducts**
 Enlaces externos de las tienda por cada producto
 
- - Collections
+ - **Collections**
  Colleciones, Promociones de productos
  
  **Observaciones**
@@ -29,6 +32,8 @@ Enlaces externos de las tienda por cada producto
  - Los productos tienen un campo `available` para desactivar un producto en concreto
  - Un producto, puede tener varios enlaces de tiendas externos
  - para establecer el orden de aparición de un producto usar `reorder_level`
+
+# Instalar
 
 ## Base de datos, tablas y datos
 
@@ -47,7 +52,6 @@ Para instalar la devstore se hace mediante compose
 ### Remotamente
 Usar ftp para subir los archvivos
 
-
 ## Configuración
 
 Dentro del directorio app se encuenta el `settings.php` donde se debe definir el acceso al servidor SQL
@@ -60,83 +64,18 @@ Dentro del directorio app se encuenta el `settings.php` donde se debe definir el
 ],
 ```
 
+
 # End points
+Uris disponibles para la obtención de recursos
 
-**Get last update**
-Obtener la última modificación de un producto
-
-`devstore/public/v1/status`
-
-
-**Get all categories**
-Obtener todas la categorias
-
-`devstore/public/v1/categories`
-
-**Get category by ID**
-Obtener una categoria mediante su ID
-
-`devstore/public/v1/categories/4`
-
-**Get all available categories**
-Obtener todas las categorias que están disponibles, campo `active` debe ser 1
-
-`devstore/public/v1/categories?filter=active:eq[1]`
-
-**Get all products**
-Obtener todos los productos
-
-`devstore/public/v1/products`
-
-**Get a product by id**
-Obtener un producto mediante su ID
-
-`devstore/public/v1/products/2`
-
-**Get only available products and sort bye reorder_level**
-Obtener los productos disponibles y reordenados por nivel de aparición, campo `reorder_level`
-
-`devstore/public/v1/products?filter=available:eq[1]&sort_by=reorder_level:asc`
-
-**Get last products**
-Obtener los 5 últimos productos de la tienda
-
-`devstore/public/v1/products?filter=available:eq[1]&sort_by=ctime:desc&limit=5`
-
-**Get all available products from category**
-Obtener todos los productos disponibles de una categoria mediante el ID de categoria
-
-`devstore/public/v1/products?filter=available:eq[1],category_id:eq[1]&sort_by=reorder_level:asc`
-
-**Get all suppliers**
-Obtener todos los subministradores de productos
-
-`devstore/public/v1/suppliers`
-
-**Get one supplier by ID**
-Obtener un subministrador mediante su ID
-
-`devstore/public/v1/suppliers/1`
-
-**Get all available products compact output**
-Obtener todos los productos disponibles, solamente los campos escenciales para mostrar un listado rápido
-
-`devstore/public/v1/products/compact`
-
-En caso se querer filtrar por una categoria
-
-`devstore/public/v1/products/compact?filter=category_id:eq[1]`
-
-
-**Get all store links from products**
-Obtener todos los enlaces de los productos
-
-`devstore/public/v1/productslinks`
-
-**Get all store links from product_id**
-Obtener todos los enlaces de un producto mediante su ID de producto
-
-`devstore/public/v1/productslinks?filter=product_id:eq[2]`
+`GET devstore/public/v1/status` Obtener la última modificación de un producto.
+`GET devstore/public/v1/categories` Obtener todas la categorias.
+`GET devstore/public/v1/suppliers` Obtener todos los subministradores de productos.
+`GET devstore/public/v1/stores` Obtener las tiendas externas.
+`GET devstore/public/v1/products` Obtener todos los productos.
+`GET devstore/public/v1/productslinks` Obtener los enlaces de la adquisición de los productos.
+`GET devstore/public/v1/products/compact`
+Obtener todos los productos disponibles, solamente los campos escenciales para mostrar un listado rápido.
 
 ## Filtrado y operadores de consulta
 
@@ -144,10 +83,51 @@ Para obtener un recurso único se puede proporcionar el id del recurso como part
 
 `GET devstore/public/v1/categories/4` devolverá el recurso único que corresponde con su identificador 4
 
+**Filtrar con operadores**
 También se puede usar parámetros de consulta para filtrar y obtener colecciones de recursos, usando el parametro `filter` especificando el nombre del campo el operador y el valor `?filter=field:operator:[value]`, por ejemplo:
 
-`GET devstore/public/v1/categories?filter=active:eq[1]` devolverá listado de las categorias activas
+`GET devstore/public/v1/categories?filter=active:eq[1]` devolverá listado de las categorias activas.
 
+Se puede combinar diferentes filtros, separados por el delimitador `,`. 
+
+`GET devstore/public/v1/products?filter=available:eq[1],category_id:eq[4]` Obtener todos los productos disponibles de una categoría concreta.
+
+**Operadores**
+Los operadores que se pueden usar en filtro de datos
+ - eq: == 
+ - ne: !=
+ -  lt: <
+ -  le: <=
+ -  gt: >
+ -  ge: >=
+ -  in: in
+ -  co: like
+
+## Ordanamiento
+La colección de datos se puede ordenar por un campo o varios campos de modo ascendente o descedente, para indicar se usa el parámetro `sort_by`
+
+`GET devstore/public/v1/products?sort_by=reorder_level:asc` para obtener los productos ordenados por `reorder_level`
+
+## Combinaciónes útiles
+
+`GET devstore/public/v1/categories?filter=active:eq[1]` Obtener todas las categorias que están disponibles, campo `active` debe ser 1
+
+`GET devstore/public/v1/products?filter=available:eq[1]&sort_by=reorder_level:asc`
+Obtener los productos disponibles y reordenados por nivel de aparición, campo `reorder_level`
+
+`GET devstore/public/v1/products?filter=available:eq[1]&sort_by=ctime:desc&limit=5`
+Obtener los 5 últimos productos de la tienda.
+
+`GET devstore/public/v1/products?filter=available:eq[1],category_id:eq[1]&sort_by=reorder_level:asc`
+Obtener todos los productos disponibles de una categoria mediante el ID de categoria.
+
+`GET devstore/public/v1/productslinks?filter=product_id:eq[2]`
+Obtener todos los enlaces de un producto mediante su ID de producto
+
+`GET devstore/public/v1/products/compact?filter=category_id:eq[1]` Obtener todos los productos disponibles, en formato compacto de una categoría concreta.
 
 # Assets
-http://localhost/devstore/public/assets/geeksta_itsworksinmymachine.jpg
+Las imágenes, recursos etc... se encuentran en el directorio `assets`
+`http://localhost/devstore/public/assets/geeksta_itsworksinmymachine.jpg`
+
+
