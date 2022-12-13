@@ -20,6 +20,11 @@ Productos disponibles
  - LinksProducts
 Enlaces externos de las tienda por cada producto
 
+ - Collections
+ Colleciones, Promociones de productos
+ 
+ **Observaciones**
+ 
  - Las categorias tienen un campo `active` para activar o desactivar los productos de esa categoria.
  - Los productos tienen un campo `available` para desactivar un producto en concreto
  - Un producto, puede tener varios enlaces de tiendas externos
@@ -43,7 +48,7 @@ Para instalar la devstore se hace mediante compose
 Usar ftp para subir los archvivos
 
 
-##Configuración
+## Configuración
 
 Dentro del directorio app se encuenta el `settings.php` donde se debe definir el acceso al servidor SQL
 
@@ -132,6 +137,17 @@ Obtener todos los enlaces de los productos
 Obtener todos los enlaces de un producto mediante su ID de producto
 
 `devstore/public/v1/productslinks?filter=product_id:eq[2]`
+
+## Filtrado y operadores de consulta
+
+Para obtener un recurso único se puede proporcionar el id del recurso como parte de la ruta URI.
+
+`GET devstore/public/v1/categories/4` devolverá el recurso único que corresponde con su identificador 4
+
+También se puede usar parámetros de consulta para filtrar y obtener colecciones de recursos, usando el parametro `filter` especificando el nombre del campo el operador y el valor `?filter=field:operator:[value]`, por ejemplo:
+
+`GET devstore/public/v1/categories?filter=active:eq[1]` devolverá listado de las categorias activas
+
 
 # Assets
 http://localhost/devstore/public/assets/geeksta_itsworksinmymachine.jpg
