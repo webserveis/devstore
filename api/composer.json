@@ -1,0 +1,32 @@
+{
+    "name": "webserveis/camins-de-ronda",
+    "description": "Simple Slim Framework 3 skeleton for REST API.",
+    "license": "MIT",
+    "type": "project",
+    "keywords": ["slim-framework", "skeleton", "rest"],
+    "authors": [
+        {
+            "name": "Webserveis",
+            "email": "webserveis@gmail.com",
+            "homepage": "https://webserveisapps.blogspot.com.es/"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/src"
+        }
+    },
+    "require": {
+        "slim/slim": "^3.12.4",
+        "monolog/monolog": "^2.5",
+        "faapz/pdo": "^2.2.1",
+        "tuupola/slim-jwt-auth": "^3.6",
+        "galbar/jsonpath": "^2.1",
+        "voku/simple_html_dom": "^4.8.6"
+     },
+    "config": {
+        "platform": {
+            "php": "7.4.33"
+        }
+    }
+}
