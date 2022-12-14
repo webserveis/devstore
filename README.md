@@ -131,3 +131,30 @@ Las imágenes, recursos etc... se encuentran en el directorio `assets`
 `http://localhost/devstore/public/assets/geeksta_itsworksinmymachine.jpg`
 
 
+# Fix
+
+archivo `devstore\vendor\faapz\pdo\src\Clause\Limit.php`
+
+```php
+public function getValues(): array
+{
+    $values = [$this->size];
+    if ($this->offset !== null) {
+        $values[] = $this->offset;
+    }
+
+    //return $values;
+    return [];
+}
+
+public function __toString(): string
+{
+    $sql = 'LIMIT ' . $this->size;
+    if ($this->offset !== null) {
+        $sql .= ' OFFSET '. $this->offset;
+    }
+
+    return $sql;
+}
+
+```
