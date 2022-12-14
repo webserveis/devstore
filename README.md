@@ -69,13 +69,20 @@ Dentro del directorio app se encuenta el `settings.php` donde se debe definir el
 Uris disponibles para la obtención de recursos
 
 `GET devstore/public/v1/status` Obtener la última modificación de un producto.
+
 `GET devstore/public/v1/categories` Obtener todas la categorias.
+
 `GET devstore/public/v1/suppliers` Obtener todos los subministradores de productos.
+
 `GET devstore/public/v1/stores` Obtener las tiendas externas.
+
 `GET devstore/public/v1/products` Obtener todos los productos.
+
 `GET devstore/public/v1/productslinks` Obtener los enlaces de la adquisición de los productos.
+
 `GET devstore/public/v1/products/compact`
 Obtener todos los productos disponibles, solamente los campos escenciales para mostrar un listado rápido.
+
 
 ## Filtrado y operadores de consulta
 
@@ -94,19 +101,38 @@ Se puede combinar diferentes filtros, separados por el delimitador `,`.
 
 **Operadores**
 Los operadores que se pueden usar en filtro de datos
- - eq: == 
- - ne: !=
- -  lt: <
- -  le: <=
- -  gt: >
- -  ge: >=
- -  in: in
+ - eq: equals
+ - ne: not equal
+ -  lt: less than
+ -  le: less than or equal
+ -  gt: greater than
+ -  ge: greater than or equal
+ -  in: including
  -  co: like
 
 ## Ordanamiento
 La colección de datos se puede ordenar por un campo o varios campos de modo ascendente o descedente, para indicar se usa el parámetro `sort_by`
 
 `GET devstore/public/v1/products?sort_by=reorder_level:asc` para obtener los productos ordenados por `reorder_level`
+
+
+## Paginación
+
+La paginación basada en el desplazamiento se utiliza los parámetros de consulta de desplazamiento y límite para paginar los elementos de una colección.
+
+El parámetro de `limit` controla el número máximo de elementos que se pueden devolver para una sola solicitud. Este parámetro se puede considerar como el tamaño de la página. Si no se especifica ningún límite, el sistema establece un límite predeterminado de 25 resultados por solicitud. El valor límite máximo válido es 100.
+
+El parámetro `offset` establece la primera posición que se devolverá a partir de los resultados de la consulta. El valor predeterminado es 0, que inicia la página en el primer resultado. El valor de desplazamiento máximo válido es 9999.
+
+`GET devstore/public/v1/products?limit=10` para obtener 10 productos.
+
+`GET devstore/public/v1/products?limit=10&offset=10` para obtener los 10 siguientes productos.
+
+
+
+## Tipos de datos de fecha
+
+Las fechas se representan con el formato EDM (2019-02-12T00:00:00): cuando especifica una fecha como "AAAA-MM-DD", la API interpreta como "AAAA-MM-DDT00:00:00". Asegúrese de que el mes y el día tengan dos dígitos, MM y DD.
 
 ## Combinaciónes útiles
 
@@ -158,3 +184,8 @@ public function __toString(): string
 }
 
 ```
+
+
+//https://learn.microsoft.com/en-us/power-bi/collaborate-share/service-url-filters
+//https://developer.box.com/guides/api-calls/pagination/offset-based/
+//https://stackoverflow.com/questions/40618327/how-to-design-generic-filtering-operators-in-the-query-string-of-an-api
