@@ -2,10 +2,12 @@
 namespace App\DataAccess;
 use InvalidArgumentException;
 
+define('_LIMIT_DEFAULT_', 25);
 define('_LIMIT_MIN_', 1);
 define('_LIMIT_MAX_', 100);
-define('_PAGE_MIN_', 0);
-define('_PAGE_MAX_', 99999);
+
+define('_OFFSET_MIN_', 0);
+define('_OFFSET_MAX_', 9999);
 define('_SORT_DEFAULT_', 'ASC');
 
 
@@ -85,27 +87,27 @@ class QueryStringHelper {
         return $arr;
     }
 
-    public static function makePageOffset(&$limit, &$page = null) {
+    public static function makeLimitOffset(&$limit, &$offset = null) {
 
-        if (!isset($limit)) $limit = _LIMIT_MAX_;
-        if (!isset($page)) $page = _PAGE_MIN_;
+        if (!isset($limit)) $limit = _LIMIT_DEFAULT_;
+        if (!isset($offset)) $offset = _OFFSET_MIN_;
 
         if (!is_numeric($limit)) {
             throw new InvalidArgumentException('limit param only accepts integers ' . _LIMIT_MIN_ . ' to ' . _LIMIT_MAX_);
         }
 
-        if (!is_numeric($page)) {
-            throw new InvalidArgumentException('page param only accepts integers ' . _PAGE_MIN_ . ' to ' . _PAGE_MAX_);
+        if (!is_numeric($offset)) {
+            throw new InvalidArgumentException('offset param only accepts integers ' . _OFFSET_MIN_ . ' to ' . _OFFSET_MAX_);
         }
 
         if ($limit < 1 || $limit > _LIMIT_MAX_) {
             throw new InvalidArgumentException('limit param only accepts integers ' . _LIMIT_MIN_ . ' to ' . _LIMIT_MAX_);
         }
-        if ($page < 0 || $page > _PAGE_MAX_) {
-            throw new InvalidArgumentException('page param only accepts integers ' . _PAGE_MIN_ . ' to ' . _PAGE_MAX_);
+        if ($offset < 0 || $offset > _OFFSET_MAX_) {
+            throw new InvalidArgumentException('offset param only accepts integers ' . _OFFSET_MIN_ . ' to ' . _OFFSET_MAX_);
         }
 
-        return [$limit, $page];
+        return [$limit, $offset];
     }
 
 }

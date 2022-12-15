@@ -39,7 +39,7 @@ class MyDataAccessPDO {
     /**
      * @return array
      */
-    public function getAllExtended($path,  &$filterParams = null, &$sortParams = null, $offset) {
+    public function getAllExtended($path,  &$filterParams = null, &$sortParams = null, $limitOffset) {
         $this
             ->logger
             ->info(substr(strrchr(rtrim(__CLASS__, '\\') , '\\') , 1) . ': ' . __FUNCTION__);
@@ -70,8 +70,8 @@ class MyDataAccessPDO {
             }
         }
 
-        [$limit, $page] = $offset;
-        $stmt->limit(new Limit($limit, $page));
+        [$limit, $offset] = $limitOffset;
+        $stmt->limit(new Limit($limit, $offset));
 
 
 

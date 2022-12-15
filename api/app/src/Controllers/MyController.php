@@ -294,7 +294,7 @@ class MyController {
 
         //Process limit page
         try {
-            $offset = QueryStringHelper::makePageOffset($arrparams['limit'], $arrparams['page']);
+            $offset = QueryStringHelper::makeLimitOffset($arrparams['limit'], $arrparams['offset']);
         } catch( \Exception $e ) {
            return $response ->withStatus(422)->write("error: " . $e->getMessage());
         }
