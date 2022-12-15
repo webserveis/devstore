@@ -189,3 +189,4 @@ public function __toString(): string
 //https://learn.microsoft.com/en-us/power-bi/collaborate-share/service-url-filters
 //https://developer.box.com/guides/api-calls/pagination/offset-based/
 //https://stackoverflow.com/questions/40618327/how-to-design-generic-filtering-operators-in-the-query-string-of-an-api
+//https://admhelp.microfocus.com/octane/en/16.1.100/Online/Content/API/query_Clause.htm
