@@ -5,6 +5,7 @@ from mysql.connector import Error
 import csv
 import re
 import time
+import sqlparse
 
 #============================ EDIT MYSQL CONFIGURATION ============================
 mysql_config = {
@@ -52,7 +53,20 @@ def execute_sqlfile(cnx, filename):
 			bar()
 	cursor.close
 
+def execute_sqlfile2(cnx, fileName):
+    with open(fileName, 'r', encoding="UTF-8") as fd:
+        sqlCommands = sqlparse.split(fd.read())
+        title = Path(fileName).stem
+        total = len(sqlCommands)
+        cursor = cnx.cursor()
 
+        with alive_bar(total, dual_line=True, title=title.ljust(15)) as bar:
+            for sqlCommand in sqlCommands:
+                cursor.execute(sqlCommand)
+                cnx.commit()
+                time.sleep(0.05)
+                bar()
+        cursor.close
 #================================== MAIN SCRIPT ===================================
 
 print(bcolors.HEADER + "DevStore Maker v1.0.0"+ bcolors.ENDC)
@@ -63,9 +77,9 @@ try:
 		print(bcolors.OKGREEN + 'connected to database' + bcolors.ENDC)
 
 	print(bcolors.OKCYAN + 'create tables and erase data' + bcolors.ENDC)
-	execute_sqlfile(cnx, 'sql_scripts/dev_store_db.sql')
+	execute_sqlfile2(cnx, 'sql_scripts/dev_store_db.sql')
 	print(bcolors.OKCYAN + 'import data' + bcolors.ENDC)
-	execute_sqlfile(cnx, 'sql_scripts/dev_store_data.sql')
+	execute_sqlfile2(cnx, 'sql_scripts/dev_store_data.sql')
 
 	cnx.close()
 	print(bcolors.OKGREEN + "🏁🏁🏁 Finished All 🏁🏁🏁" + bcolors.ENDC)
