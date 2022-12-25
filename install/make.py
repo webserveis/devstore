@@ -30,30 +30,7 @@ class bcolors:
     UNDERLINE = '\033[4m'
 
 
-def execute_sqlfile(cnx, filename):
-	cursor = cnx.cursor()
-
-	fd = open(filename, 'r', encoding="UTF-8")
-	sqlFile = fd.read()
-	fd.close()
-	sqlCommands = re.split(';\n',sqlFile) #sqlFile.split(';')
-
-	title = Path(filename).stem
-
-	total = len(sqlCommands)
-	with alive_bar(total, dual_line=True, title=title.ljust(15)) as bar:
-		for command in sqlCommands:
-			try:
-			    if command.strip() != '':
-			        cursor.execute(command)
-			        cnx.commit()
-			        time.sleep(0.05)
-			except (Exception) as e :
-				print(bcolors.WARNING + "Warning: Command skipped" + bcolors.ENDC, e)
-			bar()
-	cursor.close
-
-def execute_sqlfile2(cnx, fileName):
+def execute_sqlfile(cnx, fileName):
     with open(fileName, 'r', encoding="UTF-8") as fd:
         sqlCommands = sqlparse.split(fd.read())
         title = Path(fileName).stem
@@ -71,23 +48,27 @@ def execute_sqlfile2(cnx, fileName):
 
 print(bcolors.HEADER + "DevStore Maker v1.0.0"+ bcolors.ENDC)
 
+cnx = None
+
 try:
 	cnx = mysql.connector.connect(**mysql_config)
+except Error as e:
+	print(bcolors.FAIL + "mysql DB connection error" + bcolors.ENDC)
+	print(e)
+else:
 	if cnx.is_connected():
 		print(bcolors.OKGREEN + 'connected to database' + bcolors.ENDC)
 
 	print(bcolors.OKCYAN + 'create tables and erase data' + bcolors.ENDC)
-	execute_sqlfile2(cnx, 'sql_scripts/dev_store_db.sql')
+	execute_sqlfile(cnx, 'sql_scripts/dev_store_db.sql')
 	print(bcolors.OKCYAN + 'import data' + bcolors.ENDC)
-	execute_sqlfile2(cnx, 'sql_scripts/dev_store_data.sql')
+	execute_sqlfile(cnx, 'sql_scripts/dev_store_data.sql')
 
-	cnx.close()
-	print(bcolors.OKGREEN + "🏁🏁🏁 Finished All 🏁🏁🏁" + bcolors.ENDC)
+finally:
+    if cnx is not None and cnx.is_connected():
+    	cnx.close()
 
-except Error as e:
-	print(bcolors.FAIL + "mysql DB connection error" + bcolors.ENDC)
-	print(e)
-
+print(bcolors.OKGREEN + "🏁🏁🏁 Finished All 🏁🏁🏁" + bcolors.ENDC)
 
 
 
